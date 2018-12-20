@@ -1,0 +1,6 @@
+org.apache.ibatis.session.SqlSessionFactoryBuilder.build(Reader) //构造SqlSessionFactory;
+	>>org.apache.ibatis.builder.xml.XMLConfigBuilder.parse()  //解析XML文件成为Configuration对象 Configuration 对象与xml文件对应
+	
+	>>org.apache.ibatis.session.defaults.DefaultSqlSessionFactory.DefaultSqlSessionFactory(Configuration) 
+	                                 根据解析后的Configuration对象构建DefaultSqlSessionFactory
+	
