@@ -14,7 +14,7 @@ public class LockDemo {
 			
 			condition.await();
 			condition.signal();
-			condition.signalAll();
+			condition.signalAll();  //
 			System.out.println("dfsdfsdfsd");
 			
 			Thread.sleep(4000);
