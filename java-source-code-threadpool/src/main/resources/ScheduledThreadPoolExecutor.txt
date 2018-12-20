@@ -1,0 +1,40 @@
+java.util.concurrent.ScheduledThreadPoolExecutor.scheduleAtFixedRate(Runnable, long, long, TimeUnit)  执行定时速率的任务
+  	
+  	
+  	>>java.util.concurrent.ScheduledThreadPoolExecutor.ScheduledFutureTask.ScheduledFutureTask<Void>(Runnable, Void, long, long) 封装一个ScheduledFutureTask任务
+  		>>java.util.concurrent.Executors.callable(Runnable, T) 将runnable 封装成为callable;
+  	
+  	>>java.util.concurrent.ScheduledThreadPoolExecutor.delayedExecute(RunnableScheduledFuture<?>) 延迟执行Task
+  		>>java.util.concurrent.ScheduledThreadPoolExecutor.DelayedWorkQueue.add(Runnable) 将任务加入到延迟队列中
+  		
+  			>>任务通过延迟执行时间时行堆排序。
+  		
+  		>>java.util.concurrent.ThreadPoolExecutor.ensurePrestart() 后续启动
+  		
+  		
+  			>>java.util.concurrent.ThreadPoolExecutor.addWorker(Runnable, boolean) //加入到工作对列  启动worker线程。
+  				>>如果线程没有大于最大线程才会有后续逻辑
+  				
+  				>>java.util.concurrent.ThreadPoolExecutor.runWorker(Worker) 执行worker的run()方法
+  				
+  					>>java.util.concurrent.ThreadPoolExecutor.getTask()  //循环从队列中获取task 此处与keepAliveTime
+  					
+  						>>延时对列进行获取任务实现定时功能。
+  					 
+  					>>java.util.concurrent.ScheduledThreadPoolExecutor.ScheduledFutureTask.run() 然后执行run()方法。
+  					
+  						>>java.util.concurrent.FutureTask.runAndReset()
+  						
+  							>>java.util.concurrent.Executors.RunnableAdapter.call() 调用业务代码
+  						
+  						>>java.util.concurrent.ScheduledThreadPoolExecutor.ScheduledFutureTask.setNextRunTime()
+  						
+  						>>java.util.concurrent.ScheduledThreadPoolExecutor.reExecutePeriodic(RunnableScheduledFuture<?>)
+  					
+  					
+  					>>java.util.concurrent.ThreadPoolExecutor.processWorkerExit(Worker, boolean) 执行后续逻辑  
+  						>>java.util.concurrent.ThreadPoolExecutor.decrementWorkerCount() 为工作队列加1
+  						>>java.util.concurrent.ThreadPoolExecutor.tryTerminate() 尝试去终止线程
+  						
+  						如果线程没有终止并且工作数量小于核心数量
+  						>>java.util.concurrent.ThreadPoolExecutor.addWorker(Runnable, boolean) //加入到工作对列  启动worker线程。

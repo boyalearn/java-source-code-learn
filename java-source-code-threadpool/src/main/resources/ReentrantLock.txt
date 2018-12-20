@@ -1,0 +1,57 @@
+java.util.concurrent.locks.ReentrantLock.lock() //获取锁
+    >>java.util.concurrent.locks.ReentrantLock.FairSync.lock() //公平锁实现
+        >>java.util.concurrent.locks.AbstractQueuedSynchronizer.acquire(1)  //同步队列实现
+            >>java.util.concurrent.locks.ReentrantLock.FairSync.tryAcquire()  //尝试获取锁
+         	获取成功
+         		退出     state为1;  此处为AQS的值
+         	获取失败
+                >>java.util.concurrent.locks.AbstractQueuedSynchronizer.addWaiter()  //加入等待队列  waitState为0;
+                
+                >>java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireQueued(Node, int) //以自旋的方式不间断获取锁。
+                
+               	 获取到锁然后就
+               	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.setHead(Node) //将头节间设置成自己
+               	并且
+               	>>java.util.concurrent.locks.AbstractOwnableSynchronizer.setExclusiveOwnerThread(Thread) //设置获取到锁的线程为自己
+               	
+               	没有获取到锁就要判断是否需要park
+               	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.shouldParkAfterFailedAcquire(Node, Node); //判断前置节点 waitState为Node.SIGNAL则需要挂起
+               	>>如果前置节点不为Node.SIGNAL则需要前置节点设置成Node.SIGNAL
+               	
+               	
+               	
+java.util.concurrent.locks.ReentrantLock.unlock() //解锁
+	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.release(int) 
+		>>java.util.concurrent.locks.AbstractQueuedSynchronizer.tryRelease(int)
+			>>java.util.concurrent.locks.AbstractOwnableSynchronizer.setExclusiveOwnerThread(Thread) //设置获取锁的线程为空。
+		>>java.util.concurrent.locks.AbstractQueuedSynchronizer.unparkSuccessor(Node) //执行该方法的前提是头结点的waitState不为0
+		
+		
+		
+java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject.await();  //等待
+	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject.addConditionWaiter()  //将其加入等待队列
+	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.fullyRelease(Node) //释放锁到当前线程
+	
+	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.isOnSyncQueue(Node)  //判断是否在同步对列中。
+	
+	如果没有在同步队列中就挂起该线程
+	
+	
+	否者去竞争锁
+	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireQueued(Node, int);
+	
+	
+java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject.signal() //唤醒
+	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject.doSignal(Node)  //唤醒头节点
+		>>java.util.concurrent.locks.AbstractQueuedSynchronizer.transferForSignal(Node)  //加入到同步队列尾部
+		>>java.util.concurrent.locks.LockSupport.unpark(Thread) //唤醒
+		
+java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject.signalAll()		
+	>>java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject.doSignalAll(Node);
+		循环加入
+		>>java.util.concurrent.locks.AbstractQueuedSynchronizer.transferForSignal(Node)  //加入到同步队列尾部
+
+               	
+               	
+               	
+
