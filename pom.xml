@@ -6,5 +6,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>java-source-code-threadpool</module>
+  	<module>java-source-code-mybaits3</module>
   </modules>
 </project>
