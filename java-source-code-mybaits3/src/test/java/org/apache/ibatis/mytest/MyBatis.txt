@@ -1,0 +1,8 @@
+创建SqlSessionFactory
+org.apache.ibatis.session.SqlSessionFactoryBuilder.build(Reader, String, Properties)  构建SessionFactory
+	>org.apache.ibatis.builder.xml.XMLConfigBuilder.parse() 解析XML为Configuration对象
+		>org.apache.ibatis.session.SqlSessionFactoryBuilder.build(Configuration) 返回SqlSessionFactory
+		
+创建SqlSession
+org.apache.ibatis.session.defaults.DefaultSqlSessionFactory.openSession()
+	>org.apache.ibatis.session.defaults.DefaultSqlSession.DefaultSqlSession(Configuration, Executor, boolean)  返回默认SqlSession
