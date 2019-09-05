@@ -7,5 +7,6 @@
   <modules>
   	<module>java-source-code-threadpool</module>
   	<module>java-source-code-mybaits3</module>
+  	<module>java-source-code-netty</module>
   </modules>
 </project>

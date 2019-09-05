@@ -1,5 +1,6 @@
 package com.source.code.learn.lock;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -9,9 +10,9 @@ public class LockDemo {
 	private static Condition condition=lock.newCondition();
 	
 	public static void doWork(){
-		lock.lock();
+		
 		try {
-			
+			lock.lock();
 			condition.await();
 			condition.signal();
 			condition.signalAll();  //
@@ -46,6 +47,7 @@ public class LockDemo {
 		thread2.start();
 		thread1.join();
 		thread2.join();
+		CountDownLatch lock=new CountDownLatch(23);
 		
 	}
 }
